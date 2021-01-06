@@ -42,13 +42,15 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.activity:activity-ktx:1.1.0'
-
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+
+    // Koin
+    implementation "org.koin:koin-android:2.2.0"
+    implementation "org.koin:koin-androidx-viewmodel:2.2.0"
 
     implementation(project(":mvi-flow"))
 

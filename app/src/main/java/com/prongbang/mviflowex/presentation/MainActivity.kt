@@ -1,23 +1,30 @@
-package com.prongbang.mviflowex
+package com.prongbang.mviflowex.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import com.prongbang.flow.FlowViewRenderer
+import com.prongbang.mviflowex.R
+import com.prongbang.mviflowex.databinding.ActivityMainBinding
+import com.prongbang.mviflowex.domain.MainEffect
+import com.prongbang.mviflowex.domain.MainIntent
+import com.prongbang.mviflowex.domain.MainState
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), FlowViewRenderer<MainState, MainEffect> {
 
-	private val mainViewModel: MainViewModel by viewModels()
+	private val mainViewModel: MainViewModel by viewModel()
+
+	private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_main)
+		setContentView(binding.root)
 		initObserve()
 		initLoad()
 	}
 
-	private fun initObserve() {
+	override fun initObserve() {
 		mainViewModel.subscribe(::render, ::renderEffect)
 	}
 
@@ -28,7 +35,7 @@ class MainActivity : AppCompatActivity(), FlowViewRenderer<MainState, MainEffect
 	override fun render(state: MainState) {
 		when (state) {
 			is MainState.Result -> {
-				Log.i(MainActivity::class.java.simpleName, state.data)
+				binding.messageText.text = state.data
 			}
 		}
 	}
@@ -36,7 +43,7 @@ class MainActivity : AppCompatActivity(), FlowViewRenderer<MainState, MainEffect
 	override fun renderEffect(effects: MainEffect) {
 		when (effects) {
 			is MainEffect.Error -> {
-				Log.i(MainActivity::class.java.simpleName, effects.data)
+				binding.effectText.text = effects.data
 			}
 		}
 	}

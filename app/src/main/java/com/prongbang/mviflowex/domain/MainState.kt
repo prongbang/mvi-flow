@@ -1,4 +1,4 @@
-package com.prongbang.mviflowex
+package com.prongbang.mviflowex.domain
 
 import com.prongbang.flow.FlowState
 
