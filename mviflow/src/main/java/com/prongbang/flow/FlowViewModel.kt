@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
@@ -28,8 +28,8 @@ abstract class FlowViewModel<I : FlowIntent, S : FlowState, E : FlowEffect> : Vi
 	private val state = MutableStateFlow(this.initState())
 	private val effect = MutableStateFlow(this.initEffect())
 	private val intents = Channel<I>(Channel.UNLIMITED)
-	private val states: Flow<S> get() = state
-	private val effects: Flow<E> get() = effect
+	val states: StateFlow<S> get() = state
+	val effects: StateFlow<E> get() = effect
 
 	init {
 		handleIntent()

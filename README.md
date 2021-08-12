@@ -15,7 +15,7 @@ allprojects {
 - `app/build.gradle`
 
 ```gradle
-implementation 'com.github.prongbang:mvi-flow:1.0.2'
+implementation 'com.github.prongbang:mvi-flow:1.0.3'
 ```
 
 ## How to use
