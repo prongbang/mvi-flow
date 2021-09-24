@@ -4,18 +4,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 /**
  * How to use:
  * class NamedViewModel : FlowViewModel<FeatureIntent, FeatureState, FeatureEffect>() {
- *      override fun initState() = FeatureState.Idle
- *      override fun initEffect() = FeatureEffect.Idle
- *
  *      override fun onProcessIntent(intent: FeatureIntent) {
  *          when (intent) {
  *              FeatureIntent.GetData -> processGetData()
@@ -25,11 +28,11 @@ import kotlinx.coroutines.launch
  */
 abstract class FlowViewModel<I : FlowIntent, S : FlowState, E : FlowEffect> : ViewModel() {
 
-	private val state = MutableStateFlow(this.initState())
-	private val effect = MutableStateFlow(this.initEffect())
+	private val state = MutableSharedFlow<S>()
+	private val effect = MutableSharedFlow<E>()
 	private val intents = Channel<I>(Channel.UNLIMITED)
-	val states: StateFlow<S> get() = state
-	val effects: StateFlow<E> get() = effect
+	val states: SharedFlow<S> get() = state
+	val effects: SharedFlow<E> get() = effect
 
 	init {
 		handleIntent()
@@ -56,26 +59,28 @@ abstract class FlowViewModel<I : FlowIntent, S : FlowState, E : FlowEffect> : Vi
 	}
 
 	protected fun stateSubscribe(onState: (S) -> Unit) {
-		viewModelScope.launch((Dispatchers.Default)) {
+		viewModelScope.launch(Dispatchers.Default) {
 			states.collect { onState.invoke(it) }
 		}
 	}
 
 	protected fun effectSubscribe(onEffect: (E) -> Unit) {
-		viewModelScope.launch((Dispatchers.Default)) {
+		viewModelScope.launch(Dispatchers.Default) {
 			effects.collect { onEffect.invoke(it) }
 		}
 	}
 
-	protected fun setState(state: S) {
-		this.state.value = state
+	protected fun setState(s: S) {
+		viewModelScope.launch(Dispatchers.Default) {
+			state.emit(s)
+		}
 	}
 
-	protected fun setEffect(effect: E) {
-		this.effect.value = effect
+	protected fun setEffect(e: E) {
+		viewModelScope.launch(Dispatchers.Default) {
+			effect.emit(e)
+		}
 	}
 
-	protected abstract fun initState(): S
-	protected abstract fun initEffect(): E
 	protected abstract fun onProcessIntent(intent: I)
 }

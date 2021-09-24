@@ -30,12 +30,16 @@ class MainActivity : AppCompatActivity(), FlowViewRenderer<MainState, MainEffect
 
 	private fun initLoad() {
 		mainViewModel.process(MainIntent.GetData)
+		mainViewModel.process(MainIntent.GetBannerData)
 	}
 
 	override fun render(state: MainState) {
 		when (state) {
+			MainState.ShowLoading -> Log.i("1", "ShowLoading")
+			MainState.HideLoading -> Log.i("4", "HideLoading")
 			is MainState.Result -> {
 				binding.messageText.text = state.data
+				Log.i("2", "Result")
 			}
 		}
 	}
@@ -44,6 +48,7 @@ class MainActivity : AppCompatActivity(), FlowViewRenderer<MainState, MainEffect
 		when (effects) {
 			is MainEffect.Error -> {
 				binding.effectText.text = effects.data
+				Log.i("3", "Error")
 			}
 		}
 	}
