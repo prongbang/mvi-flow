@@ -16,8 +16,8 @@ package com.prongbang.flow
  *      }
  * }
  */
-interface FlowViewRenderer<S : FlowState, E : FlowEffect> {
+interface FlowViewRenderer<State : FlowState, Effect : FlowEffect> {
 	fun initObserve()
-	fun render(state: S)
-	fun renderEffect(effects: E)
+	fun render(state: State)
+	fun renderEffect(effects: Effect)
 }
