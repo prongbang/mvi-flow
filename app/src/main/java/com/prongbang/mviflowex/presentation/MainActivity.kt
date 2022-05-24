@@ -1,14 +1,13 @@
 package com.prongbang.mviflowex.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.prongbang.flow.FlowViewRenderer
-import com.prongbang.mviflowex.R
 import com.prongbang.mviflowex.databinding.ActivityMainBinding
-import com.prongbang.mviflowex.domain.MainEffect
-import com.prongbang.mviflowex.domain.MainIntent
-import com.prongbang.mviflowex.domain.MainState
+import com.prongbang.mviflowex.presentation.state.MainEffect
+import com.prongbang.mviflowex.presentation.state.MainIntent
+import com.prongbang.mviflowex.presentation.state.MainState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), FlowViewRenderer<MainState, MainEffect> {
@@ -36,11 +35,11 @@ class MainActivity : AppCompatActivity(), FlowViewRenderer<MainState, MainEffect
 	override fun render(state: MainState) {
 		when (state) {
 			MainState.ShowLoading -> Log.i("1", "ShowLoading")
-			MainState.HideLoading -> Log.i("4", "HideLoading")
 			is MainState.Result -> {
 				binding.messageText.text = state.data
 				Log.i("2", "Result")
 			}
+			MainState.HideLoading -> Log.i("4", "HideLoading")
 		}
 	}
 

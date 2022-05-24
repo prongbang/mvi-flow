@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.prongbang.flow.FlowViewModel
 import com.prongbang.mviflowex.domain.GetMessageUseCase
-import com.prongbang.mviflowex.domain.MainEffect
-import com.prongbang.mviflowex.domain.MainIntent
-import com.prongbang.mviflowex.domain.MainState
+import com.prongbang.mviflowex.presentation.state.MainEffect
+import com.prongbang.mviflowex.presentation.state.MainIntent
+import com.prongbang.mviflowex.presentation.state.MainState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

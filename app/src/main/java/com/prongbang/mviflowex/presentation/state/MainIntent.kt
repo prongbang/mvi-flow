@@ -1,4 +1,4 @@
-package com.prongbang.mviflowex.domain
+package com.prongbang.mviflowex.presentation.state
 
 import com.prongbang.flow.FlowIntent
 
