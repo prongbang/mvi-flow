@@ -1,5 +1,7 @@
 # mvi-flow
 
+![](https://jitpack.io/v/prongbang/mvi-flow.svg)](https://jitpack.io/#prongbang/mvi-flow)
+
 ## Setup
 
 - `build.gradle`
